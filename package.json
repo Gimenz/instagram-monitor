@@ -1,0 +1,30 @@
+{
+  "name": "instagram-monitor",
+  "version": "0.0.1",
+  "description": "Get instagram story/post updates from some user and send it to telegram",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "instagram-monitor",
+    "ig-story-downloader",
+    "insta-bot",
+    "instagram-bot",
+    "ig-story-monitor",
+    "auto-download-ig-story",
+    "insta-story-bot",
+    "instagram-stories"
+  ],
+  "author": "Gimenz",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "dotenv": "^11.0.0",
+    "instagram_mqtt": "^1.2.2",
+    "instagram-private-api": "^1.45.2",
+    "node-json-db": "^1.4.1",
+    "telegraf": "^4.6.0"
+  }
+}
