@@ -28,7 +28,7 @@ var printDate = new Date().toLocaleString('id', { dateStyle: 'long', timeStyle: 
 
         // you received a notification
         ig.fbns.on('push', async push => {
-            console.log(push);
+            //console.log(push);
             try {
                 if (push.pushCategory && push.pushCategory == 'subscribed_reel_post') {
                     const userId = push.sourceUserId
