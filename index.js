@@ -2,9 +2,8 @@ const { withFbns } = require('instagram_mqtt');
 const { IgApiClient } = require('instagram-private-api');
 const { Telegram } = require('telegraf');
 const db = require('./db');
-const { readState, loginToInstagram, saveState, color } = require('./utils');
+const { readState, loginToInstagram, saveState, color, delay } = require('./utils');
 const { fetchStories } = require('./lib/story');
-const { FeedFactory } = require('instagram-private-api/dist/core/feed.factory');
 require('dotenv').config();
 
 if (!process.env.IG_USERNAME || !process.env.IG_PASSWORD || !process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_USER_ID) {
@@ -40,8 +39,14 @@ var printDate = new Date().toLocaleString('id', { dateStyle: 'long', timeStyle: 
                     story.forEach(async (v, i, a) => {
                         if (!db.isExists(username, v.id)) {
                             db.addStoryId(username, v.id, v.expiring_at)
+                            if (process.env.IG_STORY_AUTOSEEN) {
+                                await delay(5000) // delay to avoid instagram challenge (maybe)
+                                var doSeen = await ig.story.seen([v])
+                            }
                             const opts = {
-                                caption: `<b>[New Stories]</b> - <i>Story from <a href="https://www.instagram.com/${username}">@${username}</a></i>\nPosted at : ${new Date(v.taken_at * 1000).toLocaleString('id', { dateStyle: 'full', timeStyle: 'long' })}`,
+                                caption: `<b>[New Stories]</b> - <i>Story from <a href="https://www.instagram.com/${username}">@${username}</a></i>\n` +
+                                    `Posted at : ${new Date(v.taken_at * 1000).toLocaleString('id', { dateStyle: 'full', timeStyle: 'long' })}` +
+                                    `${process.env.IG_POST_AUTOLIKE ? `\nSeen : ${doSeen.status == 'ok' ? 'Success' : 'Fail'}` : ''}`,
                                 parse_mode: 'HTML'
                             }
                             // media_type 1 is image and 2 is video

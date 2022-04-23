@@ -1,14 +1,10 @@
 require('dotenv').config()
 const chalk = require('chalk');
-const { default: axios, AxiosRequestConfig } = require('axios')
-const rp = require('request-promise')
 const { promisify } = require('util')
 const {
     writeFile,
     readFile,
     exists,
-    existsSync,
-    readFileSync
 } = require('fs');
 const { IgApiClient } = require('instagram-private-api');
 
@@ -71,10 +67,13 @@ async function loginToInstagram(ig) {
     return await ig.account.login(IG_USERNAME, IG_PASSWORD);
 }
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
 module.exports = {
     color,
     bgColor,
     saveState,
     readState,
-    loginToInstagram
+    loginToInstagram,
+    delay
 }
